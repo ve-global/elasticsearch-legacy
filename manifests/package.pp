@@ -22,7 +22,7 @@
 #
 # * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
 #
-class elasticsearch::package {
+class elasticsearch-legacy::package {
 
   Exec {
     path      => [ '/bin', '/usr/bin', '/usr/local/bin' ],
@@ -35,15 +35,15 @@ class elasticsearch::package {
 
 
   # set params: in operation
-  if $elasticsearch::ensure == 'present' {
+  if $elasticsearch-legacy::ensure == 'present' {
 
-    if $elasticsearch::restart_package_change {
-      Package[$elasticsearch::package_name] ~> Elasticsearch::Service <| |>
+    if $elasticsearch-legacy::restart_package_change {
+      Package[$elasticsearch-legacy::package_name] ~> Elasticsearch::Service <| |>
     }
-    Package[$elasticsearch::package_name] ~> Exec['remove_plugin_dir']
+    Package[$elasticsearch-legacy::package_name] ~> Exec['remove_plugin_dir']
 
     # Create directory to place the package file
-    $package_dir = $elasticsearch::package_dir
+    $package_dir = $elasticsearch-legacy::package_dir
     exec { 'create_package_dir_elasticsearch':
       cwd     => '/',
       path    => ['/usr/bin', '/bin'],
@@ -53,16 +53,16 @@ class elasticsearch::package {
 
     file { $package_dir:
       ensure  => 'directory',
-      purge   => $elasticsearch::purge_package_dir,
-      force   => $elasticsearch::purge_package_dir,
+      purge   => $elasticsearch-legacy::purge_package_dir,
+      force   => $elasticsearch-legacy::purge_package_dir,
       backup  => false,
       require => Exec['create_package_dir_elasticsearch'],
     }
 
     # Check if we want to install a specific version or not
-    if $elasticsearch::version == false {
+    if $elasticsearch-legacy::version == false {
 
-      $package_ensure = $elasticsearch::autoupgrade ? {
+      $package_ensure = $elasticsearch-legacy::autoupgrade ? {
         true  => 'latest',
         false => 'present',
       }
@@ -70,23 +70,23 @@ class elasticsearch::package {
     } else {
 
       # install specific version
-      $package_ensure = $elasticsearch::pkg_version
+      $package_ensure = $elasticsearch-legacy::pkg_version
 
     }
 
     # action
-    if ($elasticsearch::package_url != undef) {
+    if ($elasticsearch-legacy::package_url != undef) {
 
-      case $elasticsearch::package_provider {
-        'package': { $before = Package[$elasticsearch::package_name]  }
-        default:   { fail("software provider \"${elasticsearch::package_provider}\".") }
+      case $elasticsearch-legacy::package_provider {
+        'package': { $before = Package[$elasticsearch-legacy::package_name]  }
+        default:   { fail("software provider \"${elasticsearch-legacy::package_provider}\".") }
       }
 
 
-      $filename_array = split($elasticsearch::package_url, '/')
+      $filename_array = split($elasticsearch-legacy::package_url, '/')
       $basefilename = $filename_array[-1]
 
-      $source_array = split($elasticsearch::package_url, ':')
+      $source_array = split($elasticsearch-legacy::package_url, ':')
       $protocol_type = $source_array[0]
 
       $ext_array = split($basefilename, '\.')
@@ -100,7 +100,7 @@ class elasticsearch::package {
 
           file { $pkg_source:
             ensure  => file,
-            source  => $elasticsearch::package_url,
+            source  => $elasticsearch-legacy::package_url,
             require => File[$package_dir],
             backup  => false,
             before  => $before,
@@ -109,21 +109,21 @@ class elasticsearch::package {
         }
         'ftp', 'https', 'http': {
 
-          if $elasticsearch::proxy_url != undef {
+          if $elasticsearch-legacy::proxy_url != undef {
             $exec_environment = [
               'use_proxy=yes',
-              "http_proxy=${elasticsearch::proxy_url}",
-              "https_proxy=${elasticsearch::proxy_url}",
+              "http_proxy=${elasticsearch-legacy::proxy_url}",
+              "https_proxy=${elasticsearch-legacy::proxy_url}",
             ]
           } else {
             $exec_environment = []
           }
 
           exec { 'download_package_elasticsearch':
-            command     => "${elasticsearch::params::download_tool} ${pkg_source} ${elasticsearch::package_url} 2> /dev/null",
+            command     => "${elasticsearch-legacy::params::download_tool} ${pkg_source} ${elasticsearch-legacy::package_url} 2> /dev/null",
             creates     => $pkg_source,
             environment => $exec_environment,
-            timeout     => $elasticsearch::package_dl_timeout,
+            timeout     => $elasticsearch-legacy::package_dl_timeout,
             require     => File[$package_dir],
             before      => $before,
           }
@@ -146,7 +146,7 @@ class elasticsearch::package {
         }
       }
 
-      if ($elasticsearch::package_provider == 'package') {
+      if ($elasticsearch-legacy::package_provider == 'package') {
 
         case $ext {
           'deb':   { Package { provider => 'dpkg', source => $pkg_source } }
@@ -172,20 +172,20 @@ class elasticsearch::package {
 
   }
 
-  if ($elasticsearch::package_provider == 'package') {
+  if ($elasticsearch-legacy::package_provider == 'package') {
 
-    package { $elasticsearch::package_name:
+    package { $elasticsearch-legacy::package_name:
       ensure => $package_ensure,
     }
 
     exec { 'remove_plugin_dir':
       refreshonly => true,
-      command     => "rm -rf ${elasticsearch::plugindir}",
+      command     => "rm -rf ${elasticsearch-legacy::plugindir}",
     }
 
 
   } else {
-    fail("\"${elasticsearch::package_provider}\" is not supported")
+    fail("\"${elasticsearch-legacy::package_provider}\" is not supported")
   }
 
 }

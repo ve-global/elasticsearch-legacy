@@ -54,9 +54,9 @@
 #
 # * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
 #
-define elasticsearch::service::init(
-  $ensure             = $elasticsearch::ensure,
-  $status             = $elasticsearch::status,
+define elasticsearch-legacy::service::init(
+  $ensure             = $elasticsearch-legacy::ensure,
+  $status             = $elasticsearch-legacy::status,
   $init_defaults_file = undef,
   $init_defaults      = undef,
   $init_template      = undef,
@@ -107,7 +107,7 @@ define elasticsearch::service::init(
 
   }
 
-  $notify_service = $elasticsearch::restart_config_change ? {
+  $notify_service = $elasticsearch-legacy::restart_config_change ? {
     true  => Service["elasticsearch-instance-${name}"],
     false => undef,
   }
@@ -117,7 +117,7 @@ define elasticsearch::service::init(
 
     # defaults file content. Either from a hash or file
     if ($init_defaults_file != undef) {
-      file { "${elasticsearch::params::defaults_location}/elasticsearch-${name}":
+      file { "${elasticsearch-legacy::params::defaults_location}/elasticsearch-${name}":
         ensure => $ensure,
         source => $init_defaults_file,
         owner  => 'root',
@@ -131,21 +131,21 @@ define elasticsearch::service::init(
 
       if ($init_defaults != undef and is_hash($init_defaults) ) {
         if(has_key($init_defaults, 'ES_USER')) {
-          if($init_defaults['ES_USER'] != $elasticsearch::elasticsearch_user) {
+          if($init_defaults['ES_USER'] != $elasticsearch-legacy::elasticsearch_user) {
             fail('Found ES_USER setting for init_defaults but is not same as elasticsearch_user setting. Please use elasticsearch_user setting.')
           }
         }
       }
 
       $init_defaults_pre_hash = {
-        'ES_USER' => $elasticsearch::elasticsearch_user,
-        'ES_GROUP' => $elasticsearch::elasticsearch_group,
+        'ES_USER' => $elasticsearch-legacy::elasticsearch_user,
+        'ES_GROUP' => $elasticsearch-legacy::elasticsearch_group,
         'MAX_OPEN_FILES' => '65536',
       }
       $new_init_defaults = merge($init_defaults_pre_hash, $init_defaults)
 
       augeas { "defaults_${name}":
-        incl    => "${elasticsearch::params::defaults_location}/elasticsearch-${name}",
+        incl    => "${elasticsearch-legacy::params::defaults_location}/elasticsearch-${name}",
         lens    => 'Shellvars.lns',
         changes => template("${module_name}/etc/sysconfig/defaults.erb"),
         before  => Service["elasticsearch-instance-${name}"],
@@ -162,7 +162,7 @@ define elasticsearch::service::init(
         content      => file($init_template),
         instance     => $name,
         notify       => $notify_service,
-        package_name => $elasticsearch::package_name,
+        package_name => $elasticsearch-legacy::package_name,
       } ->
       file { "/etc/init.d/elasticsearch-${name}":
         ensure => $ensure,
@@ -182,7 +182,7 @@ define elasticsearch::service::init(
       subscribe => Service["elasticsearch-instance-${name}"],
     }
 
-    file { "${elasticsearch::params::defaults_location}/elasticsearch-${name}":
+    file { "${elasticsearch-legacy::params::defaults_location}/elasticsearch-${name}":
       ensure    => 'absent',
       subscribe => Service["elasticsearch-${$name}"],
     }
@@ -194,9 +194,9 @@ define elasticsearch::service::init(
     ensure     => $service_ensure,
     enable     => $service_enable,
     name       => "elasticsearch-${name}",
-    hasstatus  => $elasticsearch::params::service_hasstatus,
-    hasrestart => $elasticsearch::params::service_hasrestart,
-    pattern    => $elasticsearch::params::service_pattern,
+    hasstatus  => $elasticsearch-legacy::params::service_hasstatus,
+    hasrestart => $elasticsearch-legacy::params::service_hasrestart,
+    pattern    => $elasticsearch-legacy::params::service_pattern,
   }
 
 

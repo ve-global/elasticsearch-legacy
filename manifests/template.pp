@@ -100,20 +100,20 @@
 # * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
 # * Tyler Langlois <mailto:tyler@elastic.co>
 #
-define elasticsearch::template (
+define elasticsearch-legacy::template (
   $ensure                  = 'present',
   $file                    = undef,
   $source                  = undef,
   $content                 = undef,
-  $api_protocol            = $elasticsearch::_api_protocol,
-  $api_host                = $elasticsearch::api_host,
-  $api_port                = $elasticsearch::api_port,
-  $api_timeout             = $elasticsearch::api_timeout,
-  $api_basic_auth_username = $elasticsearch::_api_basic_auth_username,
-  $api_basic_auth_password = $elasticsearch::_api_basic_auth_password,
-  $api_ca_file             = $elasticsearch::api_ca_file,
-  $api_ca_path             = $elasticsearch::api_ca_path,
-  $validate_tls            = $elasticsearch::_validate_tls,
+  $api_protocol            = $elasticsearch-legacy::_api_protocol,
+  $api_host                = $elasticsearch-legacy::api_host,
+  $api_port                = $elasticsearch-legacy::api_port,
+  $api_timeout             = $elasticsearch-legacy::api_timeout,
+  $api_basic_auth_username = $elasticsearch-legacy::_api_basic_auth_username,
+  $api_basic_auth_password = $elasticsearch-legacy::_api_basic_auth_password,
+  $api_ca_file             = $elasticsearch-legacy::api_ca_file,
+  $api_ca_path             = $elasticsearch-legacy::api_ca_path,
+  $validate_tls            = $elasticsearch-legacy::_validate_tls,
 ) {
   validate_string(
     $api_protocol,
@@ -152,7 +152,7 @@ define elasticsearch::template (
     fail('"file" and "content" cannot be simultaneously defined.')
   }
 
-  require elasticsearch
+  require elasticsearch-legacy
 
   es_instance_conn_validator { "${name}-template":
     server => $api_host,

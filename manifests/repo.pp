@@ -23,15 +23,15 @@
 # * Phil Fenstermacher <mailto:phillip.fenstermacher@gmail.com>
 # * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
 #
-class elasticsearch::repo {
+class elasticsearch-legacy::repo {
 
   Exec {
     path => [ '/bin', '/usr/bin', '/usr/local/bin' ],
     cwd  => '/',
   }
 
-  if $elasticsearch::ensure == 'present' {
-    if versioncmp($elasticsearch::repo_version, '5.0') >= 0 {
+  if $elasticsearch-legacy::ensure == 'present' {
+    if versioncmp($elasticsearch-legacy::repo_version, '5.0') >= 0 {
       $_repo_url = 'https://artifacts.elastic.co/packages'
       case $::osfamily {
         'Debian': {
@@ -53,7 +53,7 @@ class elasticsearch::repo {
       }
     }
 
-    $_baseurl = "${_repo_url}/${elasticsearch::repo_version}/${_repo_path}"
+    $_baseurl = "${_repo_url}/${elasticsearch-legacy::repo_version}/${_repo_path}"
   } else {
     case $::osfamily {
       'Debian': {
@@ -68,22 +68,22 @@ class elasticsearch::repo {
   case $::osfamily {
     'Debian': {
       include ::apt
-      Class['apt::update'] -> Package[$elasticsearch::package_name]
+      Class['apt::update'] -> Package[$elasticsearch-legacy::package_name]
 
       apt::source { 'elasticsearch':
-        ensure   => $elasticsearch::ensure,
+        ensure   => $elasticsearch-legacy::ensure,
         location => $_baseurl,
         release  => 'stable',
         repos    => 'main',
         key      => {
-          'id'     => $::elasticsearch::repo_key_id,
-          'source' => $::elasticsearch::repo_key_source,
+          'id'     => $::elasticsearch-legacy::repo_key_id,
+          'source' => $::elasticsearch-legacy::repo_key_source,
         },
         include  => {
           'src' => false,
           'deb' => true,
         },
-        pin      => $elasticsearch::repo_priority,
+        pin      => $elasticsearch-legacy::repo_priority,
       }
     }
     'RedHat', 'Linux': {
@@ -91,17 +91,17 @@ class elasticsearch::repo {
       # See: https://tickets.puppetlabs.com/browse/PUP-2163
       if versioncmp($::puppetversion, '3.5.1') >= 0 {
         Yumrepo['elasticsearch'] {
-          ensure => $elasticsearch::ensure,
+          ensure => $elasticsearch-legacy::ensure,
         }
       }
       yumrepo { 'elasticsearch':
         descr    => 'elasticsearch repo',
         baseurl  => $_baseurl,
         gpgcheck => 1,
-        gpgkey   => $::elasticsearch::repo_key_source,
+        gpgkey   => $::elasticsearch-legacy::repo_key_source,
         enabled  => 1,
-        proxy    => $::elasticsearch::repo_proxy,
-        priority => $elasticsearch::repo_priority,
+        proxy    => $::elasticsearch-legacy::repo_proxy,
+        priority => $elasticsearch-legacy::repo_priority,
       } ~>
       exec { 'elasticsearch_yumrepo_yum_clean':
         command     => 'yum clean metadata expire-cache --disablerepo="*" --enablerepo="elasticsearch"',
@@ -112,9 +112,9 @@ class elasticsearch::repo {
     'Suse': {
       if $::operatingsystem == 'SLES' and versioncmp($::operatingsystemmajrelease, '11') <= 0 {
         # Older versions of SLES do not ship with rpmkeys
-        $_import_cmd = "rpm --import ${::elasticsearch::repo_key_source}"
+        $_import_cmd = "rpm --import ${::elasticsearch-legacy::repo_key_source}"
       } else {
-        $_import_cmd = "rpmkeys --import ${::elasticsearch::repo_key_source}"
+        $_import_cmd = "rpmkeys --import ${::elasticsearch-legacy::repo_key_source}"
       }
 
       exec { 'elasticsearch_suse_import_gpg':
@@ -130,7 +130,7 @@ class elasticsearch::repo {
         autorefresh => 1,
         name        => 'elasticsearch',
         gpgcheck    => 1,
-        gpgkey      => $::elasticsearch::repo_key_source,
+        gpgkey      => $::elasticsearch-legacy::repo_key_source,
         type        => 'yum',
       } ~>
       exec { 'elasticsearch_zypper_refresh_elasticsearch':

@@ -42,7 +42,7 @@
 #
 # * Tyler Langlois <mailto:tyler@elastic.co>
 #
-define elasticsearch::shield::role (
+define elasticsearch-legacy::shield::role (
   $ensure     = 'present',
   $privileges = {},
   $mappings   = [],

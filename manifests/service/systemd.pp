@@ -54,9 +54,9 @@
 #
 # * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
 #
-define elasticsearch::service::systemd(
-  $ensure             = $elasticsearch::ensure,
-  $status             = $elasticsearch::status,
+define elasticsearch-legacy::service::systemd(
+  $ensure             = $elasticsearch-legacy::ensure,
+  $status             = $elasticsearch-legacy::status,
   $init_defaults_file = undef,
   $init_defaults      = undef,
   $init_template      = undef,
@@ -103,7 +103,7 @@ define elasticsearch::service::systemd(
     $service_enable = false
   }
 
-  $notify_service = $elasticsearch::restart_config_change ? {
+  $notify_service = $elasticsearch-legacy::restart_config_change ? {
     true  => [ Exec["systemd_reload_${name}"], Service["elasticsearch-instance-${name}"] ],
     false => Exec["systemd_reload_${name}"]
   }
@@ -112,7 +112,7 @@ define elasticsearch::service::systemd(
 
     # defaults file content. Either from a hash or file
     if ($init_defaults_file != undef) {
-      file { "${elasticsearch::params::defaults_location}/elasticsearch-${name}":
+      file { "${elasticsearch-legacy::params::defaults_location}/elasticsearch-${name}":
         ensure => $ensure,
         source => $init_defaults_file,
         owner  => 'root',
@@ -126,20 +126,20 @@ define elasticsearch::service::systemd(
       if ($init_defaults != undef and is_hash($init_defaults) ) {
 
         if(has_key($init_defaults, 'ES_USER')) {
-          if($init_defaults['ES_USER'] != $elasticsearch::elasticsearch_user) {
+          if($init_defaults['ES_USER'] != $elasticsearch-legacy::elasticsearch_user) {
             fail('Found ES_USER setting for init_defaults but is not same as elasticsearch_user setting. Please use elasticsearch_user setting.')
           }
         }
       }
       $init_defaults_pre_hash = {
-        'ES_USER' => $elasticsearch::elasticsearch_user,
-        'ES_GROUP' => $elasticsearch::elasticsearch_group,
+        'ES_USER' => $elasticsearch-legacy::elasticsearch_user,
+        'ES_GROUP' => $elasticsearch-legacy::elasticsearch_group,
         'MAX_OPEN_FILES' => '65536',
       }
       $new_init_defaults = merge($init_defaults_pre_hash, $init_defaults)
 
       augeas { "defaults_${name}":
-        incl    => "${elasticsearch::params::defaults_location}/elasticsearch-${name}",
+        incl    => "${elasticsearch-legacy::params::defaults_location}/elasticsearch-${name}",
         lens    => 'Shellvars.lns',
         changes => template("${module_name}/etc/sysconfig/defaults.erb"),
         before  => Service["elasticsearch-instance-${name}"],
@@ -162,20 +162,20 @@ define elasticsearch::service::systemd(
         $memlock = undef
       }
 
-      elasticsearch_service_file { "${elasticsearch::params::systemd_service_path}/elasticsearch-${name}.service":
+      elasticsearch_service_file { "${elasticsearch-legacy::params::systemd_service_path}/elasticsearch-${name}.service":
         ensure            => $ensure,
         content           => file($init_template),
-        defaults_location => $elasticsearch::defaults_location,
-        group             => $elasticsearch::elasticsearch_group,
+        defaults_location => $elasticsearch-legacy::defaults_location,
+        group             => $elasticsearch-legacy::elasticsearch_group,
         instance          => $name,
         memlock           => $memlock,
         nofile            => $nofile,
-        package_name      => $elasticsearch::package_name,
-        pid_dir           => $elasticsearch::pid_dir,
-        user              => $elasticsearch::elasticsearch_user,
+        package_name      => $elasticsearch-legacy::package_name,
+        pid_dir           => $elasticsearch-legacy::pid_dir,
+        user              => $elasticsearch-legacy::elasticsearch_user,
         notify            => $notify_service,
       } ->
-      file { "${elasticsearch::params::systemd_service_path}/elasticsearch-${name}.service":
+      file { "${elasticsearch-legacy::params::systemd_service_path}/elasticsearch-${name}.service":
         ensure => $ensure,
         before => Service["elasticsearch-instance-${name}"],
         notify => $notify_service,

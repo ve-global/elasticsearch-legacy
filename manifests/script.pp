@@ -28,12 +28,12 @@
 #
 # * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
 #
-define elasticsearch::script(
+define elasticsearch-legacy::script(
   $source,
   $ensure  = 'present',
 ) {
 
-  require elasticsearch
+  require elasticsearch-legacy
 
   # ensure
   if ! ($ensure in [ 'present', 'absent' ]) {
@@ -45,11 +45,11 @@ define elasticsearch::script(
   $filename_array = split($source, '/')
   $basefilename = $filename_array[-1]
 
-  file { "${elasticsearch::params::homedir}/scripts/${basefilename}":
+  file { "${elasticsearch-legacy::params::homedir}/scripts/${basefilename}":
     ensure => $ensure,
     source => $source,
-    owner  => $elasticsearch::elasticsearch_user,
-    group  => $elasticsearch::elasticsearch_group,
+    owner  => $elasticsearch-legacy::elasticsearch_user,
+    group  => $elasticsearch-legacy::elasticsearch_group,
     mode   => '0644',
   }
 }
