@@ -36,42 +36,42 @@ class elasticsearch-legacy::config {
     file {
       $elasticsearch-legacy::configdir:
         ensure => 'directory',
-        group  => $elasticsearch-legacy::elasticsearch_group,
-        owner  => $elasticsearch-legacy::elasticsearch_user,
+        group  => $elasticsearch-legacy::elasticsearch-legacy_group,
+        owner  => $elasticsearch-legacy::elasticsearch-legacy_user,
         mode   => '0644';
       $elasticsearch-legacy::datadir:
         ensure => 'directory',
-        group  => $elasticsearch-legacy::elasticsearch_group,
-        owner  => $elasticsearch-legacy::elasticsearch_user;
+        group  => $elasticsearch-legacy::elasticsearch-legacy_group,
+        owner  => $elasticsearch-legacy::elasticsearch-legacy_user;
       $elasticsearch-legacy::logdir:
         ensure  => 'directory',
         group   => undef,
-        owner   => $elasticsearch-legacy::elasticsearch_user,
+        owner   => $elasticsearch-legacy::elasticsearch-legacy_user,
         mode    => '0644',
         recurse => true;
       $elasticsearch-legacy::plugindir:
         ensure => 'directory',
-        group  => $elasticsearch-legacy::elasticsearch_group,
-        owner  => $elasticsearch-legacy::elasticsearch_user,
+        group  => $elasticsearch-legacy::elasticsearch-legacy_group,
+        owner  => $elasticsearch-legacy::elasticsearch-legacy_user,
         mode   => 'o+Xr';
       "${elasticsearch-legacy::homedir}/lib":
         ensure  => 'directory',
-        group   => $elasticsearch-legacy::elasticsearch_group,
-        owner   => $elasticsearch-legacy::elasticsearch_user,
+        group   => $elasticsearch-legacy::elasticsearch-legacy_group,
+        owner   => $elasticsearch-legacy::elasticsearch-legacy_user,
         recurse => true;
       $elasticsearch-legacy::params::homedir:
         ensure => 'directory',
-        group  => $elasticsearch-legacy::elasticsearch_group,
-        owner  => $elasticsearch-legacy::elasticsearch_user;
+        group  => $elasticsearch-legacy::elasticsearch-legacy_group,
+        owner  => $elasticsearch-legacy::elasticsearch-legacy_user;
       "${elasticsearch-legacy::params::homedir}/templates_import":
         ensure => 'directory',
-        group  => $elasticsearch-legacy::elasticsearch_group,
-        owner  => $elasticsearch-legacy::elasticsearch_user,
+        group  => $elasticsearch-legacy::elasticsearch-legacy_group,
+        owner  => $elasticsearch-legacy::elasticsearch-legacy_user,
         mode   => '0644';
       "${elasticsearch-legacy::params::homedir}/scripts":
         ensure => 'directory',
-        group  => $elasticsearch-legacy::elasticsearch_group,
-        owner  => $elasticsearch-legacy::elasticsearch_user,
+        group  => $elasticsearch-legacy::elasticsearch-legacy_group,
+        owner  => $elasticsearch-legacy::elasticsearch-legacy_user,
         mode   => '0644';
       "${elasticsearch-legacy::params::homedir}/shield":
         ensure => 'directory',
@@ -92,13 +92,13 @@ class elasticsearch-legacy::config {
       file { $elasticsearch-legacy::params::pid_dir:
         ensure  => 'directory',
         group   => undef,
-        owner   => $elasticsearch-legacy::elasticsearch_user,
+        owner   => $elasticsearch-legacy::elasticsearch-legacy_user,
         recurse => true,
       }
 
       if ($elasticsearch-legacy::service_providers == 'systemd') {
-        $group = $elasticsearch-legacy::elasticsearch_group
-        $user = $elasticsearch-legacy::elasticsearch_user
+        $group = $elasticsearch-legacy::elasticsearch-legacy_group
+        $user = $elasticsearch-legacy::elasticsearch-legacy_user
         $pid_dir = $elasticsearch-legacy::params::pid_dir
 
         file { '/usr/lib/tmpfiles.d/elasticsearch.conf':

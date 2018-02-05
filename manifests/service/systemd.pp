@@ -126,14 +126,14 @@ define elasticsearch-legacy::service::systemd(
       if ($init_defaults != undef and is_hash($init_defaults) ) {
 
         if(has_key($init_defaults, 'ES_USER')) {
-          if($init_defaults['ES_USER'] != $elasticsearch-legacy::elasticsearch_user) {
+          if($init_defaults['ES_USER'] != $elasticsearch-legacy::elasticsearch-legacy_user) {
             fail('Found ES_USER setting for init_defaults but is not same as elasticsearch_user setting. Please use elasticsearch_user setting.')
           }
         }
       }
       $init_defaults_pre_hash = {
-        'ES_USER' => $elasticsearch-legacy::elasticsearch_user,
-        'ES_GROUP' => $elasticsearch-legacy::elasticsearch_group,
+        'ES_USER' => $elasticsearch-legacy::elasticsearch-legacy_user,
+        'ES_GROUP' => $elasticsearch-legacy::elasticsearch-legacy_group,
         'MAX_OPEN_FILES' => '65536',
       }
       $new_init_defaults = merge($init_defaults_pre_hash, $init_defaults)
@@ -166,13 +166,13 @@ define elasticsearch-legacy::service::systemd(
         ensure            => $ensure,
         content           => file($init_template),
         defaults_location => $elasticsearch-legacy::defaults_location,
-        group             => $elasticsearch-legacy::elasticsearch_group,
+        group             => $elasticsearch-legacy::elasticsearch-legacy_group,
         instance          => $name,
         memlock           => $memlock,
         nofile            => $nofile,
         package_name      => $elasticsearch-legacy::package_name,
         pid_dir           => $elasticsearch-legacy::pid_dir,
-        user              => $elasticsearch-legacy::elasticsearch_user,
+        user              => $elasticsearch-legacy::elasticsearch-legacy_user,
         notify            => $notify_service,
       } ->
       file { "${elasticsearch-legacy::params::systemd_service_path}/elasticsearch-${name}.service":

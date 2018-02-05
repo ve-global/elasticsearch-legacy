@@ -48,8 +48,8 @@ define elasticsearch-legacy::script(
   file { "${elasticsearch-legacy::params::homedir}/scripts/${basefilename}":
     ensure => $ensure,
     source => $source,
-    owner  => $elasticsearch-legacy::elasticsearch_user,
-    group  => $elasticsearch-legacy::elasticsearch_group,
+    owner  => $elasticsearch-legacy::elasticsearch-legacy_user,
+    group  => $elasticsearch-legacy::elasticsearch-legacy_group,
     mode   => '0644',
   }
 }

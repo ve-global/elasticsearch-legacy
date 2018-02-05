@@ -168,8 +168,8 @@ define elasticsearch-legacy::instance(
   require elasticsearch-legacy::params
 
   File {
-    owner => $elasticsearch-legacy::elasticsearch_user,
-    group => $elasticsearch-legacy::elasticsearch_group,
+    owner => $elasticsearch-legacy::elasticsearch-legacy_user,
+    group => $elasticsearch-legacy::elasticsearch-legacy_group,
   }
 
   Exec {
@@ -335,34 +335,34 @@ define elasticsearch-legacy::instance(
 
     file { $instance_logdir:
       ensure  => 'directory',
-      owner   => $elasticsearch-legacy::elasticsearch_user,
+      owner   => $elasticsearch-legacy::elasticsearch-legacy_user,
       group   => undef,
       mode    => '0644',
       require => Class['elasticsearch-legacy::package'],
-      before  => Elasticsearch::Service[$name],
+      before  => Elasticsearch-legacy::Service[$name],
     }
 
     exec { "mkdir_datadir_elasticsearch_${name}":
       command => "mkdir -p ${dirs}",
       creates => $instance_datadir,
       require => Class['elasticsearch-legacy::package'],
-      before  => Elasticsearch::Service[$name],
+      before  => Elasticsearch-legacy::Service[$name],
     }
 
     file { $instance_datadir:
       ensure  => 'directory',
-      owner   => $elasticsearch-legacy::elasticsearch_user,
+      owner   => $elasticsearch-legacy::elasticsearch-legacy_user,
       group   => undef,
       mode    => '0644',
       require => [ Exec["mkdir_datadir_elasticsearch-legacy_${name}"], Class['elasticsearch-legacy::package'] ],
-      before  => Elasticsearch::Service[$name],
+      before  => Elasticsearch-legacy::Service[$name],
     }
 
     exec { "mkdir_configdir_elasticsearch-legacy_${name}":
       command => "mkdir -p ${instance_configdir}",
       creates => $elasticsearch-legacy::configdir,
       require => Class['elasticsearch-legacy::package'],
-      before  => Elasticsearch::Service[$name],
+      before  => Elasticsearch-legacy::Service[$name],
     }
 
     file { $instance_configdir:
@@ -371,7 +371,7 @@ define elasticsearch-legacy::instance(
       purge   => $elasticsearch-legacy::purge_configdir,
       force   => $elasticsearch-legacy::purge_configdir,
       require => [ Exec["mkdir_configdir_elasticsearch-legacy_${name}"], Class['elasticsearch-legacy::package'] ],
-      before  => Elasticsearch::Service[$name],
+      before  => Elasticsearch-legacy::Service[$name],
     }
 
     file {
@@ -382,7 +382,7 @@ define elasticsearch-legacy::instance(
         mode    => '0644',
         notify  => $notify_service,
         require => Class['elasticsearch-legacy::package'],
-        before  => Elasticsearch::Service[$name];
+        before  => Elasticsearch-legacy::Service[$name];
       "${instance_configdir}/log4j2.properties":
         ensure  => file,
         content => $_log4j_content,
@@ -390,7 +390,7 @@ define elasticsearch-legacy::instance(
         mode    => '0644',
         notify  => $notify_service,
         require => Class['elasticsearch-legacy::package'],
-        before  => Elasticsearch::Service[$name];
+        before  => Elasticsearch-legacy::Service[$name];
     }
 
     file { "${instance_configdir}/scripts":
@@ -405,7 +405,7 @@ define elasticsearch-legacy::instance(
       recurse => 'remote',
       owner   => 'root',
       group   => '0',
-      before  => Elasticsearch::Service[$name],
+      before  => Elasticsearch-legacy::Service[$name],
     }
 
     if $system_key != undef {
@@ -413,7 +413,7 @@ define elasticsearch-legacy::instance(
         ensure  => 'file',
         source  => $system_key,
         mode    => '0400',
-        before  => Elasticsearch::Service[$name],
+        before  => Elasticsearch-legacy::Service[$name],
         require => File["${instance_configdir}/shield"],
       }
     }
@@ -464,12 +464,12 @@ define elasticsearch-legacy::instance(
       template => "${module_name}/etc/elasticsearch/elasticsearch.yml.erb",
       notify   => $notify_service,
       require  => Class['elasticsearch-legacy::package'],
-      owner    => $elasticsearch-legacy::elasticsearch_user,
-      group    => $elasticsearch-legacy::elasticsearch_group,
+      owner    => $elasticsearch-legacy::elasticsearch-legacy_user,
+      group    => $elasticsearch-legacy::elasticsearch-legacy_group,
       mode     => '0440',
     }
 
-    $require_service = Class['elasticsearch::package']
+    $require_service = Class['elasticsearch-legacy::package']
     $before_service  = undef
 
   } else {

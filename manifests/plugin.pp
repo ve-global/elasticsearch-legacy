@@ -115,7 +115,7 @@ define elasticsearch-legacy::plugin(
 
   if ! empty($instances) and $elasticsearch-legacy::restart_plugin_change {
     Elasticsearch_plugin[$name] {
-      notify +> Elasticsearch::Instance[$instances],
+      notify +> Elasticsearch-legacy::Instance[$instances],
     }
   }
 
