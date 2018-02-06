@@ -348,36 +348,36 @@
 #
 # * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
 #
-class elasticsearch-legacy(
-  $ensure                         = $elasticsearch-legacy::params::ensure,
-  $status                         = $elasticsearch-legacy::params::status,
-  $restart_on_change              = $elasticsearch-legacy::params::restart_on_change,
-  $restart_config_change          = $elasticsearch-legacy::restart_on_change,
-  $restart_package_change         = $elasticsearch-legacy::restart_on_change,
-  $restart_plugin_change          = $elasticsearch-legacy::restart_on_change,
-  $autoupgrade                    = $elasticsearch-legacy::params::autoupgrade,
+class elasticsearch_legacy(
+  $ensure                         = $elasticsearch_legacy::params::ensure,
+  $status                         = $elasticsearch_legacy::params::status,
+  $restart_on_change              = $elasticsearch_legacy::params::restart_on_change,
+  $restart_config_change          = $elasticsearch_legacy::restart_on_change,
+  $restart_package_change         = $elasticsearch_legacy::restart_on_change,
+  $restart_plugin_change          = $elasticsearch_legacy::restart_on_change,
+  $autoupgrade                    = $elasticsearch_legacy::params::autoupgrade,
   $version                        = false,
   $package_provider               = 'package',
   $package_url                    = undef,
-  $package_dir                    = $elasticsearch-legacy::params::package_dir,
-  $package_name                   = $elasticsearch-legacy::params::package,
+  $package_dir                    = $elasticsearch_legacy::params::package_dir,
+  $package_name                   = $elasticsearch_legacy::params::package,
   $package_pin                    = true,
-  $purge_package_dir              = $elasticsearch-legacy::params::purge_package_dir,
-  $package_dl_timeout             = $elasticsearch-legacy::params::package_dl_timeout,
+  $purge_package_dir              = $elasticsearch_legacy::params::purge_package_dir,
+  $package_dl_timeout             = $elasticsearch_legacy::params::package_dl_timeout,
   $proxy_url                      = undef,
-  $elasticsearch_user             = $elasticsearch-legacy::params::elasticsearch-legacy_user,
-  $elasticsearch_group            = $elasticsearch-legacy::params::elasticsearch-legacy_group,
-  $configdir                      = $elasticsearch-legacy::params::configdir,
-  $purge_configdir                = $elasticsearch-legacy::params::purge_configdir,
+  $elasticsearch_user             = $elasticsearch_legacy::params::elasticsearch_legacy_user,
+  $elasticsearch_group            = $elasticsearch_legacy::params::elasticsearch_legacy_group,
+  $configdir                      = $elasticsearch_legacy::params::configdir,
+  $purge_configdir                = $elasticsearch_legacy::params::purge_configdir,
   $service_provider               = 'init',
   $init_defaults                  = undef,
   $init_defaults_file             = undef,
-  $init_template                  = "${module_name}/etc/init.d/${elasticsearch-legacy::params::init_template}",
+  $init_template                  = "${module_name}/etc/init.d/${elasticsearch_legacy::params::init_template}",
   $config                         = undef,
   $config_hiera_merge             = false,
-  $datadir                        = $elasticsearch-legacy::params::datadir,
-  $logdir                         = $elasticsearch-legacy::params::logdir,
-  $plugindir                      = $elasticsearch-legacy::params::plugindir,
+  $datadir                        = $elasticsearch_legacy::params::datadir,
+  $logdir                         = $elasticsearch_legacy::params::logdir,
+  $plugindir                      = $elasticsearch_legacy::params::plugindir,
   $java_install                   = false,
   $java_package                   = undef,
   $jvm_options                    = [],
@@ -390,7 +390,7 @@ class elasticsearch-legacy(
   $logging_file                   = undef,
   $logging_config                 = undef,
   $logging_template               = undef,
-  $default_logging_level          = $elasticsearch-legacy::params::default_logging_level,
+  $default_logging_level          = $elasticsearch_legacy::params::default_logging_level,
   $repo_stage                     = false,
   $instances                      = undef,
   $instances_hiera_merge          = false,
@@ -410,13 +410,13 @@ class elasticsearch-legacy(
   $api_ca_path                    = undef,
   $validate_tls                   = true,
   $system_key                     = undef,
-  $file_rolling_type              = $elasticsearch-legacy::params::file_rolling_type,
-  $daily_rolling_date_pattern     = $elasticsearch-legacy::params::daily_rolling_date_pattern,
-  $rolling_file_max_backup_index  = $elasticsearch-legacy::params::rolling_file_max_backup_index,
-  $rolling_file_max_file_size     = $elasticsearch-legacy::params::rolling_file_max_file_size,
-) inherits elasticsearch-legacy::params {
+  $file_rolling_type              = $elasticsearch_legacy::params::file_rolling_type,
+  $daily_rolling_date_pattern     = $elasticsearch_legacy::params::daily_rolling_date_pattern,
+  $rolling_file_max_backup_index  = $elasticsearch_legacy::params::rolling_file_max_backup_index,
+  $rolling_file_max_file_size     = $elasticsearch_legacy::params::rolling_file_max_file_size,
+) inherits elasticsearch_legacy::params {
 
-  anchor {'elasticsearch-legacy::begin': }
+  anchor {'elasticsearch_legacy::begin': }
 
   warning('The 0.x series of this module is deprecated. Future updates will follow major upstream versioning (starting with 5.x) at the Puppet forge namespace elastic/elasticsearch.')
 
@@ -455,15 +455,15 @@ class elasticsearch-legacy(
   # purge conf dir
   validate_bool($purge_configdir)
 
-  if is_array($elasticsearch-legacy::params::service_providers) {
+  if is_array($elasticsearch_legacy::params::service_providers) {
     # Verify the service provider given is in the array
-    if ! ($service_provider in $elasticsearch-legacy::params::service_providers) {
+    if ! ($service_provider in $elasticsearch_legacy::params::service_providers) {
       fail("\"${service_provider}\" is not a valid provider for \"${::operatingsystem}\"")
     }
     $real_service_provider = $service_provider
   } else {
     # There is only one option so simply set it
-    $real_service_provider = $elasticsearch-legacy::params::service_providers
+    $real_service_provider = $elasticsearch_legacy::params::service_providers
   }
 
   if ($package_url != undef and $version != false) {
@@ -563,16 +563,16 @@ class elasticsearch-legacy(
   #### Manage actions
 
   # package(s)
-  class { 'elasticsearch-legacy::package': }
+  class { 'elasticsearch_legacy::package': }
 
   # configuration
-  class { 'elasticsearch-legacy::config': }
+  class { 'elasticsearch_legacy::config': }
 
   # Hiera support for configuration hash
   validate_bool($config_hiera_merge)
 
   if $config_hiera_merge == true {
-    $x_config = hiera_hash('elasticsearch-legacy::config', $config)
+    $x_config = hiera_hash('elasticsearch_legacy::config', $config)
   } else {
     $x_config = $config
   }
@@ -581,28 +581,28 @@ class elasticsearch-legacy(
   validate_bool($instances_hiera_merge)
 
   if $instances_hiera_merge == true {
-    $x_instances = hiera_hash('elasticsearch-legacy::instances', $::elasticsearch-legacy::instances)
+    $x_instances = hiera_hash('elasticsearch_legacy::instances', $::elasticsearch_legacy::instances)
   } else {
     $x_instances = $instances
   }
 
   if $x_instances {
     validate_hash($x_instances)
-    create_resources('elasticsearch-legacy::instance', $x_instances)
+    create_resources('elasticsearch_legacy::instance', $x_instances)
   }
 
   # Hiera support for plugins
   validate_bool($plugins_hiera_merge)
 
   if $plugins_hiera_merge == true {
-    $x_plugins = hiera_hash('elasticsearch-legacy::plugins', $::elasticsearch-legacy::plugins)
+    $x_plugins = hiera_hash('elasticsearch_legacy::plugins', $::elasticsearch_legacy::plugins)
   } else {
     $x_plugins = $plugins
   }
 
   if $x_plugins {
     validate_hash($x_plugins)
-    create_resources('elasticsearch-legacy::plugin', $x_plugins)
+    create_resources('elasticsearch_legacy::plugin', $x_plugins)
   }
 
 
@@ -614,14 +614,14 @@ class elasticsearch-legacy(
     }
 
     # ensure we first install java, the package and then the rest
-    Anchor['elasticsearch-legacy::begin']
+    Anchor['elasticsearch_legacy::begin']
     -> Class['::java']
-    -> Class['elasticsearch-legacy::package']
+    -> Class['elasticsearch_legacy::package']
   }
 
   if $package_pin {
-    class { 'elasticsearch-legacy::package::pin':
-      before => Class['elasticsearch-legacy::package'],
+    class { 'elasticsearch_legacy::package::pin':
+      before => Class['elasticsearch_legacy::package'],
     }
   }
 
@@ -631,13 +631,13 @@ class elasticsearch-legacy(
       # use anchor for ordering
 
       # Set up repositories
-      class { 'elasticsearch-legacy::repo': }
+      class { 'elasticsearch_legacy::repo': }
 
       # Ensure that we set up the repositories before trying to install
       # the packages
-      Anchor['elasticsearch-legacy::begin']
-      -> Class['elasticsearch-legacy::repo']
-      -> Class['elasticsearch-legacy::package']
+      Anchor['elasticsearch_legacy::begin']
+      -> Class['elasticsearch_legacy::repo']
+      -> Class['elasticsearch_legacy::package']
 
     } else {
       # use staging for ordering
@@ -646,14 +646,14 @@ class elasticsearch-legacy(
         stage { $repo_stage:  before => Stage['main'] }
       }
 
-      class { 'elasticsearch-legacy::repo':
+      class { 'elasticsearch_legacy::repo':
         stage => $repo_stage,
       }
     }
 
-    if defined(Class['elasticsearch-legacy::package::pin']) {
-      Class['elasticsearch-legacy::package::pin']
-      -> Class['elasticsearch-legacy::repo']
+    if defined(Class['elasticsearch_legacy::package::pin']) {
+      Class['elasticsearch_legacy::package::pin']
+      -> Class['elasticsearch_legacy::repo']
     }
 
   }
@@ -670,47 +670,47 @@ class elasticsearch-legacy(
   if $ensure == 'present' {
 
     # Anchor, installation, and configuration
-    Anchor['elasticsearch-legacy::begin']
-    -> Class['elasticsearch-legacy::package']
-    -> Class['elasticsearch-legacy::config']
+    Anchor['elasticsearch_legacy::begin']
+    -> Class['elasticsearch_legacy::package']
+    -> Class['elasticsearch_legacy::config']
 
     # Top-level ordering bindings for resources.
-    Class['elasticsearch-legacy::config']
-    -> elasticsearch-legacy::Plugin <| ensure == 'present' or ensure == 'installed' |>
+    Class['elasticsearch_legacy::config']
+    -> elasticsearch_legacy::Plugin <| ensure == 'present' or ensure == 'installed' |>
     Elasticsearch::Plugin <| ensure == 'absent' |>
-    -> Class['elasticsearch-legacy::config']
-    Class['elasticsearch-legacy::config']
+    -> Class['elasticsearch_legacy::config']
+    Class['elasticsearch_legacy::config']
     -> Elasticsearch::Instance <| |>
-    Class['elasticsearch-legacy::config']
+    Class['elasticsearch_legacy::config']
     -> Elasticsearch::Shield::User <| |>
-    Class['elasticsearch-legacy::config']
+    Class['elasticsearch_legacy::config']
     -> Elasticsearch::Shield::Role <| |>
-    Class['elasticsearch-legacy::config']
+    Class['elasticsearch_legacy::config']
     -> Elasticsearch::Template <| |>
 
   } else {
 
     # Main anchor and included classes
-    Anchor['elasticsearch-legacy::begin']
-    -> Class['elasticsearch-legacy::config']
-    -> Class['elasticsearch-legacy::package']
+    Anchor['elasticsearch_legacy::begin']
+    -> Class['elasticsearch_legacy::config']
+    -> Class['elasticsearch_legacy::package']
 
     # Top-level ordering bindings for resources.
-    Anchor['elasticsearch-legacy::begin']
+    Anchor['elasticsearch_legacy::begin']
     -> Elasticsearch::Plugin <| |>
-    -> Class['elasticsearch-legacy::config']
-    Anchor['elasticsearch-legacy::begin']
+    -> Class['elasticsearch_legacy::config']
+    Anchor['elasticsearch_legacy::begin']
     -> Elasticsearch::Instance <| |>
-    -> Class['elasticsearch-legacy::config']
-    Anchor['elasticsearch-legacy::begin']
+    -> Class['elasticsearch_legacy::config']
+    Anchor['elasticsearch_legacy::begin']
     -> Elasticsearch::Shield::User <| |>
-    -> Class['elasticsearch-legacy::config']
-    Anchor['elasticsearch-legacy::begin']
+    -> Class['elasticsearch_legacy::config']
+    Anchor['elasticsearch_legacy::begin']
     -> Elasticsearch::Shield::Role <| |>
-    -> Class['elasticsearch-legacy::config']
-    Anchor['elasticsearch-legacy::begin']
+    -> Class['elasticsearch_legacy::config']
+    Anchor['elasticsearch_legacy::begin']
     -> Elasticsearch::Template <| |>
-    -> Class['elasticsearch-legacy::config']
+    -> Class['elasticsearch_legacy::config']
 
   }
 

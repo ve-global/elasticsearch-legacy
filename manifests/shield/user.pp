@@ -37,7 +37,7 @@
 #
 # * Tyler Langlois <mailto:tyler@elastic.co>
 #
-define elasticsearch-legacy::shield::user (
+define elasticsearch_legacy::shield::user (
   $password,
   $ensure = 'present',
   $roles  = [],

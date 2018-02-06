@@ -57,19 +57,19 @@
 #
 # * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
 #
-define elasticsearch-legacy::service(
-  $ensure             = $elasticsearch-legacy::ensure,
-  $status             = $elasticsearch-legacy::status,
+define elasticsearch_legacy::service(
+  $ensure             = $elasticsearch_legacy::ensure,
+  $status             = $elasticsearch_legacy::status,
   $init_defaults_file = undef,
   $init_defaults      = undef,
   $init_template      = undef,
   $service_flags      = undef,
 ) {
 
-  case $elasticsearch-legacy::real_service_provider {
+  case $elasticsearch_legacy::real_service_provider {
 
     'init': {
-      elasticsearch-legacy::service::init { $name:
+      elasticsearch_legacy::service::init { $name:
         ensure             => $ensure,
         status             => $status,
         init_defaults_file => $init_defaults_file,
@@ -78,7 +78,7 @@ define elasticsearch-legacy::service(
       }
     }
     'openbsd': {
-      elasticsearch-legacy::service::openbsd { $name:
+      elasticsearch_legacy::service::openbsd { $name:
         ensure        => $ensure,
         status        => $status,
         init_template => $init_template,
@@ -86,7 +86,7 @@ define elasticsearch-legacy::service(
       }
     }
     'systemd': {
-      elasticsearch-legacy::service::systemd { $name:
+      elasticsearch_legacy::service::systemd { $name:
         ensure             => $ensure,
         status             => $status,
         init_defaults_file => $init_defaults_file,
@@ -95,7 +95,7 @@ define elasticsearch-legacy::service(
       }
     }
     'openrc': {
-      elasticsearch-legacy::service::openrc { $name:
+      elasticsearch_legacy::service::openrc { $name:
         ensure             => $ensure,
         status             => $status,
         init_defaults_file => $init_defaults_file,
@@ -104,7 +104,7 @@ define elasticsearch-legacy::service(
       }
     }
     default: {
-      fail("Unknown service provider ${elasticsearch-legacy::real_service_provider}")
+      fail("Unknown service provider ${elasticsearch_legacy::real_service_provider}")
     }
 
   }

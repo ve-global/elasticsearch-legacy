@@ -27,7 +27,7 @@
 #
 # * Richard Pijnenburg <mailto:richard@ispavailability.com>
 #
-class elasticsearch-legacy::params {
+class elasticsearch_legacy::params {
 
   #### Default values for the parameters of the main module class, init.pp
 
@@ -73,16 +73,16 @@ class elasticsearch-legacy::params {
   # User and Group for the files and user to run the service as.
   case $::kernel {
     'Linux': {
-      $elasticsearch-legacy_user  = 'elasticsearch'
-      $elasticsearch-legacy_group = 'elasticsearch'
+      $elasticsearch_legacy_user  = 'elasticsearch'
+      $elasticsearch_legacy_group = 'elasticsearch'
     }
     'Darwin': {
-      $elasticsearch-legacy_user  = 'elasticsearch'
-      $elasticsearch-legacy_group = 'elasticsearch'
+      $elasticsearch_legacy_user  = 'elasticsearch'
+      $elasticsearch_legacy_group = 'elasticsearch'
     }
     'OpenBSD': {
-      $elasticsearch-legacy_user  = '_elasticsearch'
-      $elasticsearch-legacy_group = '_elasticsearch'
+      $elasticsearch_legacy_user  = '_elasticsearch'
+      $elasticsearch_legacy_group = '_elasticsearch'
     }
     default: {
       fail("\"${module_name}\" provides no user/group default value

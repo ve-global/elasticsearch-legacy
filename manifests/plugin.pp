@@ -81,7 +81,7 @@
 # * Dennis Konert <mailto:dkonert@gmail.com>
 # * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
 #
-define elasticsearch-legacy::plugin(
+define elasticsearch_legacy::plugin(
   $instances      = undef,
   $module_dir     = undef,
   $ensure         = 'present',
@@ -93,7 +93,7 @@ define elasticsearch-legacy::plugin(
   $proxy_password = undef,
 ) {
 
-  include elasticsearch-legacy
+  include elasticsearch_legacy
 
   case $ensure {
     'installed', 'present': {
@@ -106,21 +106,21 @@ define elasticsearch-legacy::plugin(
     }
     'absent': {
       $_file_ensure = $ensure
-      $_file_before = File[$elasticsearch-legacy::plugindir]
+      $_file_before = File[$elasticsearch_legacy::plugindir]
     }
     default: {
       fail("'${ensure}' is not a valid ensure parameter value")
     }
   }
 
-  if ! empty($instances) and $elasticsearch-legacy::restart_plugin_change {
+  if ! empty($instances) and $elasticsearch_legacy::restart_plugin_change {
     Elasticsearch_plugin[$name] {
-      notify +> Elasticsearch-legacy::Instance[$instances],
+      notify +> elasticsearch_legacy::Instance[$instances],
     }
   }
 
   # set proxy by override or parse and use proxy_url from
-  # elasticsearch-legacy::proxy_url or use no proxy at all
+  # elasticsearch_legacy::proxy_url or use no proxy at all
 
   if ($proxy_host != undef and $proxy_port != undef) {
     if ($proxy_username != undef and $proxy_password != undef) {
@@ -129,8 +129,8 @@ define elasticsearch-legacy::plugin(
       $_proxy_auth = undef
     }
     $_proxy = "http://${_proxy_auth}${proxy_host}:${proxy_port}"
-  } elsif ($elasticsearch-legacy::proxy_url != undef) {
-    $_proxy = $elasticsearch-legacy::proxy_url
+  } elsif ($elasticsearch_legacy::proxy_url != undef) {
+    $_proxy = $elasticsearch_legacy::proxy_url
   } else {
     $_proxy = undef
   }
@@ -140,7 +140,7 @@ define elasticsearch-legacy::plugin(
     $filename_array = split($source, '/')
     $basefilename = $filename_array[-1]
 
-    $file_source = "${elasticsearch-legacy::package_dir}/${basefilename}"
+    $file_source = "${elasticsearch_legacy::package_dir}/${basefilename}"
 
     file { $file_source:
       ensure => 'file',
@@ -160,14 +160,14 @@ define elasticsearch-legacy::plugin(
 
   elasticsearch_plugin { $name:
     ensure                     => $ensure,
-    elasticsearch_package_name => $elasticsearch-legacy::package_name,
+    elasticsearch_package_name => $elasticsearch_legacy::package_name,
     source                     => $file_source,
     url                        => $url,
     proxy                      => $_proxy,
-    plugin_dir                 => $::elasticsearch-legacy::plugindir,
+    plugin_dir                 => $::elasticsearch_legacy::plugindir,
     plugin_path                => $module_dir,
   } ->
-  file { "${elasticsearch-legacy::plugindir}/${_module_dir}":
+  file { "${elasticsearch_legacy::plugindir}/${_module_dir}":
     ensure  => $_file_ensure,
     mode    => 'o+Xr',
     recurse => true,

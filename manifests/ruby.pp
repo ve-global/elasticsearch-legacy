@@ -27,7 +27,7 @@
 #
 # * Richard Pijnenburg <mailto:richard@ispavailability.com>
 #
-define elasticsearch-legacy::ruby (
+define elasticsearch_legacy::ruby (
   $ensure = 'present'
 ) {
 

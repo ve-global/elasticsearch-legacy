@@ -27,7 +27,7 @@
 #
 # * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
 #
-define elasticsearch-legacy::python (
+define elasticsearch_legacy::python (
   $ensure = 'present'
 ) {
 

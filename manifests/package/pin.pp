@@ -1,4 +1,4 @@
-# == Class: elasticsearch-legacy::package::pin
+# == Class: elasticsearch_legacy::package::pin
 #
 # Controls package pinning for the Elasticsearch package.
 #
@@ -9,7 +9,7 @@
 # === Examples
 #
 # This class may be imported by other classes to use its functionality:
-#   class { 'elasticsearch-legacy::package::pin': }
+#   class { 'elasticsearch_legacy::package::pin': }
 #
 # It is not intended to be used directly by external resources like node
 # definitions or other modules.
@@ -18,7 +18,7 @@
 #
 # * Tyler Langlois <mailto:tyler@elastic.co>
 #
-class elasticsearch-legacy::package::pin {
+class elasticsearch_legacy::package::pin {
 
   Exec {
     path => [ '/bin', '/usr/bin', '/usr/local/bin' ],
@@ -29,15 +29,15 @@ class elasticsearch-legacy::package::pin {
     'Debian': {
       include ::apt
 
-      if ($elasticsearch-legacy::ensure == 'absent') {
-        apt::pin { $elasticsearch-legacy::package_name:
-          ensure => $elasticsearch-legacy::ensure,
+      if ($elasticsearch_legacy::ensure == 'absent') {
+        apt::pin { $elasticsearch_legacy::package_name:
+          ensure => $elasticsearch_legacy::ensure,
         }
-      } elsif ($elasticsearch-legacy::version != false) {
-        apt::pin { $elasticsearch-legacy::package_name:
-          ensure   => $elasticsearch-legacy::ensure,
-          packages => $elasticsearch-legacy::package_name,
-          version  => $elasticsearch-legacy::version,
+      } elsif ($elasticsearch_legacy::version != false) {
+        apt::pin { $elasticsearch_legacy::package_name:
+          ensure   => $elasticsearch_legacy::ensure,
+          packages => $elasticsearch_legacy::package_name,
+          version  => $elasticsearch_legacy::version,
           priority => 1000,
         }
       }
@@ -45,20 +45,20 @@ class elasticsearch-legacy::package::pin {
     }
     'RedHat', 'Linux': {
 
-      if ($elasticsearch-legacy::ensure == 'absent') {
+      if ($elasticsearch_legacy::ensure == 'absent') {
         $_versionlock = '/etc/yum/pluginconf.d/versionlock.list'
-        $_lock_line = '0:elasticsearch-legacy-'
-        exec { 'elasticsearch-legacy_purge_versionlock.list':
+        $_lock_line = '0:elasticsearch_legacy-'
+        exec { 'elasticsearch_legacy_purge_versionlock.list':
           command => "sed -i '/${_lock_line}/d' ${_versionlock}",
           onlyif  => [
             "test -f ${_versionlock}",
             "grep -F '${_lock_line}' ${_versionlock}",
           ],
         }
-      } elsif ($elasticsearch-legacy::version != false) {
+      } elsif ($elasticsearch_legacy::version != false) {
         yum::versionlock {
-          "0:elasticsearch-legacy-${elasticsearch-legacy::pkg_version}.noarch":
-            ensure => $elasticsearch-legacy::ensure,
+          "0:elasticsearch_legacy-${elasticsearch_legacy::pkg_version}.noarch":
+            ensure => $elasticsearch_legacy::ensure,
         }
       }
 

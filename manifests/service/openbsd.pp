@@ -54,11 +54,11 @@
 #
 # * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
 #
-define elasticsearch-legacy::service::openbsd(
-  $ensure             = $elasticsearch-legacy::ensure,
-  $status             = $elasticsearch-legacy::status,
-  $pid_dir            = $elasticsearch-legacy::pid_dir,
-  $init_template      = $elasticsearch-legacy::init_template,
+define elasticsearch_legacy::service::openbsd(
+  $ensure             = $elasticsearch_legacy::ensure,
+  $status             = $elasticsearch_legacy::status,
+  $pid_dir            = $elasticsearch_legacy::pid_dir,
+  $init_template      = $elasticsearch_legacy::init_template,
   $service_flags      = undef,
 ) {
 
@@ -107,7 +107,7 @@ define elasticsearch-legacy::service::openbsd(
 
   }
 
-  $notify_service = $elasticsearch-legacy::restart_config_change ? {
+  $notify_service = $elasticsearch_legacy::restart_config_change ? {
     true  => Service["elasticsearch-instance-${name}"],
     false => undef,
   }
@@ -122,7 +122,7 @@ define elasticsearch-legacy::service::openbsd(
         content      => file($init_template),
         instance     => $name,
         notify       => $notify_service,
-        package_name => $elasticsearch-legacy::package_name,
+        package_name => $elasticsearch_legacy::package_name,
       } ->
       file { "/etc/rc.d/elasticsearch_${name}":
         ensure => $ensure,
@@ -152,9 +152,9 @@ define elasticsearch-legacy::service::openbsd(
       enable     => $service_enable,
       name       => "elasticsearch_${name}",
       flags      => $service_flags,
-      hasstatus  => $elasticsearch-legacy::params::service_hasstatus,
-      hasrestart => $elasticsearch-legacy::params::service_hasrestart,
-      pattern    => $elasticsearch-legacy::params::service_pattern,
+      hasstatus  => $elasticsearch_legacy::params::service_hasstatus,
+      hasrestart => $elasticsearch_legacy::params::service_hasrestart,
+      pattern    => $elasticsearch_legacy::params::service_pattern,
     }
 
   }
