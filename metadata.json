@@ -1,5 +1,5 @@
 {
-  "name": "elasticsearch-elasticsearch",
+  "name": "elasticsearch_legacy",
   "version": "0.16.2",
   "author": "elasticsearch",
   "summary": "[Deprecated] module moved to elastic/elasticsearch",
