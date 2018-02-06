@@ -342,7 +342,7 @@ define elasticsearch_legacy::instance(
       before  => Elasticsearch_legacy::Service[$name],
     }
 
-    exec { "mkdir_datadir_elasticsearch_${name}":
+    exec { "mkdir_datadir_elasticsearch_legacy_${name}":
       command => "mkdir -p ${dirs}",
       creates => $instance_datadir,
       require => Class['elasticsearch_legacy::package'],
