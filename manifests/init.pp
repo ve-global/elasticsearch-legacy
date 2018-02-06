@@ -675,8 +675,7 @@ class elasticsearch_legacy(
     -> Class['elasticsearch_legacy::config']
 
     # Top-level ordering bindings for resources.
-    Class['elasticsearch_legacy::config']
-    -> elasticsearch_legacy::Plugin <| ensure == 'present' or ensure == 'installed' |>
+    Class['elasticsearch_legacy::config']-> elasticsearch_legacy::Plugin <| ensure == 'present' or ensure == 'installed' |>
     Elasticsearch::Plugin <| ensure == 'absent' |>
     -> Class['elasticsearch_legacy::config']
     Class['elasticsearch_legacy::config']
