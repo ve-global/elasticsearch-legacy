@@ -675,17 +675,18 @@ class elasticsearch_legacy(
     -> Class['elasticsearch_legacy::config']
 
     # Top-level ordering bindings for resources.
-    Class['elasticsearch_legacy::config']-> elasticsearch_legacy::Plugin <| ensure == 'present' or ensure == 'installed' |>
-    Elasticsearch::Plugin <| ensure == 'absent' |>
+    Class['elasticsearch_legacy::config']
+    -> Elasticsearch_legacy::Plugin <| ensure == 'present' or ensure == 'installed' |>
+    Elasticsearch_legacy::Plugin <| ensure == 'absent' |>
     -> Class['elasticsearch_legacy::config']
     Class['elasticsearch_legacy::config']
-    -> Elasticsearch::Instance <| |>
+    -> Elasticsearch_legacy::Instance <| |>
     Class['elasticsearch_legacy::config']
-    -> Elasticsearch::Shield::User <| |>
+    -> Elasticsearch_legacy::Shield::User <| |>
     Class['elasticsearch_legacy::config']
-    -> Elasticsearch::Shield::Role <| |>
+    -> Elasticsearch_legacy::Shield::Role <| |>
     Class['elasticsearch_legacy::config']
-    -> Elasticsearch::Template <| |>
+    -> Elasticsearch_legacy::Template <| |>
 
   } else {
 
@@ -696,60 +697,60 @@ class elasticsearch_legacy(
 
     # Top-level ordering bindings for resources.
     Anchor['elasticsearch_legacy::begin']
-    -> Elasticsearch::Plugin <| |>
+    -> Elasticsearch_legacy::Plugin <| |>
     -> Class['elasticsearch_legacy::config']
     Anchor['elasticsearch_legacy::begin']
-    -> Elasticsearch::Instance <| |>
+    -> Elasticsearch_legacy::Instance <| |>
     -> Class['elasticsearch_legacy::config']
     Anchor['elasticsearch_legacy::begin']
-    -> Elasticsearch::Shield::User <| |>
+    -> Elasticsearch_legacy::Shield::User <| |>
     -> Class['elasticsearch_legacy::config']
     Anchor['elasticsearch_legacy::begin']
-    -> Elasticsearch::Shield::Role <| |>
+    -> Elasticsearch_legacy::Shield::Role <| |>
     -> Class['elasticsearch_legacy::config']
     Anchor['elasticsearch_legacy::begin']
-    -> Elasticsearch::Template <| |>
+    -> Elasticsearch_legacy::Template <| |>
     -> Class['elasticsearch_legacy::config']
 
   }
 
   # Install plugins before managing instances or shield users/roles
-  Elasticsearch::Plugin <| ensure == 'present' or ensure == 'installed' |>
-  -> Elasticsearch::Instance <| |>
-  Elasticsearch::Plugin <| ensure == 'present' or ensure == 'installed' |>
-  -> Elasticsearch::Shield::User <| |>
-  Elasticsearch::Plugin <| ensure == 'present' or ensure == 'installed' |>
-  -> Elasticsearch::Shield::Role <| |>
+  Elasticsearch_legacy::Plugin <| ensure == 'present' or ensure == 'installed' |>
+  -> Elasticsearch_legacy::Instance <| |>
+  Elasticsearch_legacy::Plugin <| ensure == 'present' or ensure == 'installed' |>
+  -> Elasticsearch_legacy::Shield::User <| |>
+  Elasticsearch_legacy::Plugin <| ensure == 'present' or ensure == 'installed' |>
+  -> Elasticsearch_legacy::Shield::Role <| |>
 
   # Remove plugins after managing shield users/roles
-  Elasticsearch::Shield::User <| |>
-  -> Elasticsearch::Plugin <| ensure == 'absent' |>
-  Elasticsearch::Shield::Role <| |>
-  -> Elasticsearch::Plugin <| ensure == 'absent' |>
+  Elasticsearch_legacy::Shield::User <| |>
+  -> Elasticsearch_legacy::Plugin <| ensure == 'absent' |>
+  Elasticsearch_legacy::Shield::Role <| |>
+  -> Elasticsearch_legacy::Plugin <| ensure == 'absent' |>
 
   # Ensure roles are defined before managing users that reference roles
-  Elasticsearch::Shield::Role <| |>
-  -> Elasticsearch::Shield::User <| ensure == 'present' |>
+  Elasticsearch_legacy::Shield::Role <| |>
+  -> Elasticsearch_legacy::Shield::User <| ensure == 'present' |>
   # Ensure users are removed before referenced roles are managed
-  Elasticsearch::Shield::User <| ensure == 'absent' |>
-  -> Elasticsearch::Shield::Role <| |>
+  Elasticsearch_legacy::Shield::User <| ensure == 'absent' |>
+  -> Elasticsearch_legacy::Shield::Role <| |>
 
   # Ensure users and roles are managed before calling out to templates
-  Elasticsearch::Shield::Role <| |>
-  -> Elasticsearch::Template <| |>
-  Elasticsearch::Shield::User <| |>
-  -> Elasticsearch::Template <| |>
+  Elasticsearch_legacy::Shield::Role <| |>
+  -> Elasticsearch_legacy::Template <| |>
+  Elasticsearch_legacy::Shield::User <| |>
+  -> Elasticsearch_legacy::Template <| |>
 
   # Manage users/roles before instances (req'd to keep shield dir in sync)
-  Elasticsearch::Shield::Role <| |>
-  -> Elasticsearch::Instance <| |>
-  Elasticsearch::Shield::User <| |>
-  -> Elasticsearch::Instance <| |>
+  Elasticsearch_legacy::Shield::Role <| |>
+  -> Elasticsearch_legacy::Instance <| |>
+  Elasticsearch_legacy::Shield::User <| |>
+  -> Elasticsearch_legacy::Instance <| |>
 
   # Ensure instances are started before managing templates
-  Elasticsearch::Instance <| ensure == 'present' |>
-  -> Elasticsearch::Template <| |>
+  Elasticsearch_legacy::Instance <| ensure == 'present' |>
+  -> Elasticsearch_legacy::Template <| |>
   # Ensure instances are stopped after managing templates
-  Elasticsearch::Template <| |>
-  -> Elasticsearch::Instance <| ensure == 'absent' |>
+  Elasticsearch_legacy::Template <| |>
+  -> Elasticsearch_legacy::Instance <| ensure == 'absent' |>
 }
