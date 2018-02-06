@@ -183,7 +183,7 @@ define elasticsearch_legacy::instance(
   }
 
   $notify_service = $elasticsearch_legacy::restart_config_change ? {
-    true  => Elasticsearch::service[$name],
+    true  => elasticsearch::service[$name],
     false => undef,
   }
 
