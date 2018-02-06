@@ -339,14 +339,14 @@ define elasticsearch_legacy::instance(
       group   => undef,
       mode    => '0644',
       require => Class['elasticsearch_legacy::package'],
-      before  => elasticsearch_legacy::service[$name],
+      before  => Elasticsearch_legacy::service[$name],
     }
 
     exec { "mkdir_datadir_elasticsearch_${name}":
       command => "mkdir -p ${dirs}",
       creates => $instance_datadir,
       require => Class['elasticsearch_legacy::package'],
-      before  => elasticsearch_legacy::service[$name],
+      before  => Elasticsearch_legacy::service[$name],
     }
 
     file { $instance_datadir:
@@ -355,14 +355,14 @@ define elasticsearch_legacy::instance(
       group   => undef,
       mode    => '0644',
       require => [ Exec["mkdir_datadir_elasticsearch_legacy_${name}"], Class['elasticsearch_legacy::package'] ],
-      before  => elasticsearch_legacy::service[$name],
+      before  => Elasticsearch_legacy::service[$name],
     }
 
     exec { "mkdir_configdir_elasticsearch_legacy_${name}":
       command => "mkdir -p ${instance_configdir}",
       creates => $elasticsearch_legacy::configdir,
       require => Class['elasticsearch_legacy::package'],
-      before  => elasticsearch_legacy::service[$name],
+      before  => Elasticsearch_legacy::service[$name],
     }
 
     file { $instance_configdir:
@@ -371,7 +371,7 @@ define elasticsearch_legacy::instance(
       purge   => $elasticsearch_legacy::purge_configdir,
       force   => $elasticsearch_legacy::purge_configdir,
       require => [ Exec["mkdir_configdir_elasticsearch_legacy_${name}"], Class['elasticsearch_legacy::package'] ],
-      before  => elasticsearch_legacy::service[$name],
+      before  => Elasticsearch_legacy::service[$name],
     }
 
     file {
@@ -382,7 +382,7 @@ define elasticsearch_legacy::instance(
         mode    => '0644',
         notify  => $notify_service,
         require => Class['elasticsearch_legacy::package'],
-        before  => elasticsearch_legacy::service[$name];
+        before  => Elasticsearch_legacy::service[$name];
       "${instance_configdir}/log4j2.properties":
         ensure  => file,
         content => $_log4j_content,
@@ -390,7 +390,7 @@ define elasticsearch_legacy::instance(
         mode    => '0644',
         notify  => $notify_service,
         require => Class['elasticsearch_legacy::package'],
-        before  => elasticsearch_legacy::service[$name];
+        before  => Elasticsearch_legacy::service[$name];
     }
 
     file { "${instance_configdir}/scripts":
@@ -405,7 +405,7 @@ define elasticsearch_legacy::instance(
       recurse => 'remote',
       owner   => 'root',
       group   => '0',
-      before  => elasticsearch_legacy::service[$name],
+      before  => Elasticsearch_legacy::service[$name],
     }
 
     if $system_key != undef {
@@ -413,7 +413,7 @@ define elasticsearch_legacy::instance(
         ensure  => 'file',
         source  => $system_key,
         mode    => '0400',
-        before  => elasticsearch_legacy::service[$name],
+        before  => Elasticsearch_legacy::service[$name],
         require => File["${instance_configdir}/shield"],
       }
     }
