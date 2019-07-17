@@ -46,19 +46,19 @@ define elasticsearch_legacy::shield::user (
   validate_array($roles)
 
   if $password =~ /^\$2a\$/ {
-    elasticsearch_shield_user { $name:
+    elasticsearch_shield_user_legacy { $name:
       ensure          => $ensure,
       hashed_password => $password,
     }
   } else {
-    elasticsearch_shield_user { $name:
+    elasticsearch_shield_user_legacy { $name:
       ensure   => $ensure,
       password => $password,
       provider => 'esusers',
     }
   }
 
-  elasticsearch_shield_user_roles { $name:
+  elasticsearch_shield_user_roles_legacy { $name:
     ensure => $ensure,
     roles  => $roles,
   }

@@ -117,7 +117,7 @@ define elasticsearch_legacy::service::openbsd(
     # init file from template
     if ($init_template != undef) {
 
-      elasticsearch_service_file { "/etc/rc.d/elasticsearch_${name}":
+      elasticsearch_service_file_legacy { "/etc/rc.d/elasticsearch_${name}":
         ensure       => $ensure,
         content      => file($init_template),
         instance     => $name,

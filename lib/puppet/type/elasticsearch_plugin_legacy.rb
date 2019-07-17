@@ -1,4 +1,4 @@
-Puppet::Type.newtype(:elasticsearch_plugin) do
+Puppet::Type.newtype(:elasticsearch_plugin_legacy) do
 
   @doc = "Plugin installation type"
 

@@ -1,5 +1,5 @@
 require 'uri'
-require 'puppet_x/elastic/es_versioning'
+require 'puppet_x/elastic/es_versioning_legacy'
 require 'puppet_x/elastic/plugin_name'
 
 class Puppet::Provider::ElasticPlugin < Puppet::Provider

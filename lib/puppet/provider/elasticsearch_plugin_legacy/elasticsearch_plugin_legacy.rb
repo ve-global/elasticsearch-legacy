@@ -1,7 +1,7 @@
-require 'puppet/provider/elastic_plugin'
+require 'puppet/provider/elastic_plugin_legacy'
 
-Puppet::Type.type(:elasticsearch_plugin).provide(
-  :elasticsearch_plugin,
+Puppet::Type.type(:elasticsearch_plugin_legacy).provide(
+  :elasticsearch_plugin_legacy,
   :parent => Puppet::Provider::ElasticPlugin
 ) do
   desc <<-END

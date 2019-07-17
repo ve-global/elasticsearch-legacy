@@ -1,4 +1,4 @@
-require 'puppet/provider/elastic_yaml'
+require 'puppet/provider/elastic_yaml_legacy'
 
 case Facter.value('osfamily')
 when 'OpenBSD'
@@ -7,7 +7,7 @@ else
   mappings = '/usr/share/elasticsearch/shield/role_mapping.yml'
 end
 
-Puppet::Type.type(:elasticsearch_shield_role_mapping).provide(
+Puppet::Type.type(:elasticsearch_shield_role_mapping_legacy).provide(
   :parsed,
   :parent => Puppet::Provider::ElasticYaml,
   :default_target => mappings,

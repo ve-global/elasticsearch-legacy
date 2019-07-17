@@ -324,9 +324,9 @@ elasticsearch::ruby { 'elasticsearch': }
 ### Connection Validator
 
 This module offers a way to make sure an instance has been started and is up and running before
-doing a next action. This is done via the use of the `es_instance_conn_validator` resource.
+doing a next action. This is done via the use of the `es_instance_conn_validator_legacy` resource.
 ```puppet
-es_instance_conn_validator { 'myinstance' :
+es_instance_conn_validator_legacy { 'myinstance' :
   server => 'es.example.com',
   port   => '9200',
 }
@@ -336,7 +336,7 @@ A common use would be for example :
 
 ```puppet
 class { 'kibana4' :
-  require => Es_Instance_Conn_Validator['myinstance'],
+  require => es_instance_conn_validator_legacy['myinstance'],
 }
 ```
 
@@ -512,7 +512,7 @@ See the [Shield documentation](https://www.elastic.co/guide/en/shield/index.html
 If you would like to explicitly purge the default roles (leaving only roles managed by puppet), you can do so by including the following in your manifest:
 
 ```puppet
-resources { 'elasticsearch_shield_role':
+resources { 'elasticsearch_shield_role_legacy':
   purge => true,
 }
 ```
@@ -546,7 +546,7 @@ elasticsearch::shield::role { 'logstash':
 If you'd like to keep the mappings file purged of entries not under Puppet's control, you should use the following `resources` declaration because mappings are a separate low-level type:
 
 ```puppet
-resources { 'elasticsearch_shield_role_mapping':
+resources { 'elasticsearch_shield_role_mapping_legacy':
   purge => true,
 }
 ```

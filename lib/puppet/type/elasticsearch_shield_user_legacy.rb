@@ -1,4 +1,4 @@
-Puppet::Type.newtype(:elasticsearch_shield_user) do
+Puppet::Type.newtype(:elasticsearch_shield_user_legacy) do
   desc "Type to model Elasticsearch shield users."
 
   feature :manages_passwords,

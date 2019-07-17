@@ -155,7 +155,7 @@ define elasticsearch_legacy::service::openrc(
     # init file from template
     if ($init_template != undef) {
 
-      elasticsearch_service_file { "/etc/init.d/elasticsearch.${name}":
+      elasticsearch_service_file_legacy { "/etc/init.d/elasticsearch.${name}":
         ensure       => $ensure,
         content      => file($init_template),
         instance     => $name,

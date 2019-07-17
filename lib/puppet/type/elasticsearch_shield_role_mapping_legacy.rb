@@ -1,4 +1,4 @@
-Puppet::Type.newtype(:elasticsearch_shield_role_mapping) do
+Puppet::Type.newtype(:elasticsearch_shield_role_mapping_legacy) do
   desc "Type to model Elasticsearch shield role mappings."
 
   ensurable do

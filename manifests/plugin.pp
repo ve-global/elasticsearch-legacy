@@ -114,7 +114,7 @@ define elasticsearch_legacy::plugin(
   }
 
   if ! empty($instances) and $elasticsearch_legacy::restart_plugin_change {
-    Elasticsearch_plugin[$name] {
+    Elasticsearch_plugin_legacy[$name] {
       notify +> elasticsearch_legacy::instance[$instances],
     }
   }
@@ -145,7 +145,7 @@ define elasticsearch_legacy::plugin(
     file { $file_source:
       ensure => 'file',
       source => $source,
-      before => Elasticsearch_plugin[$name],
+      before => Elasticsearch_plugin_legacy[$name],
     }
 
   } else {
@@ -158,7 +158,7 @@ define elasticsearch_legacy::plugin(
 
   $_module_dir = es_plugin_name($module_dir, $name)
 
-  elasticsearch_plugin { $name:
+  elasticsearch_plugin_legacy { $name:
     ensure                     => $ensure,
     elasticsearch_package_name => $elasticsearch_legacy::package_name,
     source                     => $file_source,

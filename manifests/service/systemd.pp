@@ -162,7 +162,7 @@ define elasticsearch_legacy::service::systemd(
         $memlock = undef
       }
 
-      elasticsearch_service_file { "${elasticsearch_legacy::params::systemd_service_path}/elasticsearch-${name}.service":
+      elasticsearch_service_file_legacy { "${elasticsearch_legacy::params::systemd_service_path}/elasticsearch-${name}.service":
         ensure            => $ensure,
         content           => file($init_template),
         defaults_location => $elasticsearch_legacy::defaults_location,

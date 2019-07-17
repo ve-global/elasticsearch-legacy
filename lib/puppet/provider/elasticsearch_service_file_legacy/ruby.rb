@@ -3,9 +3,9 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__),"..","..","..",".."))
 require 'pathname'
 require 'puppet/util/filetype'
 
-require 'puppet_x/elastic/es_versioning'
+require 'puppet_x/elastic/es_versioning_legacy'
 
-Puppet::Type.type(:elasticsearch_service_file).provide(:ruby) do
+Puppet::Type.type(:elasticsearch_service_file_legacy).provide(:ruby) do
   desc <<-ENDHEREDOC
     Provides management of elasticsearch service files.
   ENDHEREDOC

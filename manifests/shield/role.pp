@@ -64,12 +64,12 @@ define elasticsearch_legacy::shield::role (
     $_mapping_ensure = $ensure
   }
 
-  elasticsearch_shield_role { $name :
+  elasticsearch_shield_role_legacy { $name :
     ensure     => $_role_ensure,
     privileges => $privileges,
   }
 
-  elasticsearch_shield_role_mapping { $name :
+  elasticsearch_shield_role_mapping_legacy { $name :
     ensure   => $_mapping_ensure,
     mappings => $mappings,
   }
