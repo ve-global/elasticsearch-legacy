@@ -103,8 +103,8 @@ Primarily a bugfix release to resolve HTTPS use in elasticsearch::template resou
 * Elasticsearch templates now properly use HTTPS when instructed to do so.
 
 #### Changes
-* Updated the elasticsearch_template type to return more helpful error output.
-* Updated the es_instance_conn_validator type to silence deprecation warnings in Puppet >= 4.
+* Updated the elasticsearch_template_legacy type to return more helpful error output.
+* Updated the es_instance_conn_validator_legacy type to silence deprecation warnings in Puppet >= 4.
 
 #### Testing changes
 
@@ -121,7 +121,7 @@ Support for the Shield `system_key` file.
 
 #### Bugfixes
 * Fixed systemd elasticsearch.service unit masking to use systemctl rather than raw symlinking to avoid puppet file backup errors.
-* Fixed a couple of cases that broke compatability with older versions of puppet (elasticsearch_template types on puppet versions prior to 3.6 and yumrepo parameters on puppet versions prior to 3.5.1)
+* Fixed a couple of cases that broke compatability with older versions of puppet (elasticsearch_template_legacy types on puppet versions prior to 3.6 and yumrepo parameters on puppet versions prior to 3.5.1)
 * Fixed issues that caused templates to be incorrectly detected as out-of-sync and thus always changed on each puppet run.
 * Resources are now explicitly ordered to ensure behavior such as plugins being installed before instance start, users managed before templates changed, etc.
 
@@ -166,7 +166,7 @@ Rewritten yaml generator, code cleanup, and various bugfixes. Configuration file
 #### Bugfixes
 * Special yaml cases such as arrays of hashes and strings like "::" are properly supported.
 * Previous Debian SysV init scripts mistakenly set the `DATA_DIR` environment variable to a non-default value.
-* Some plugins failed installation due to capitalization munging, the elasticsearch_plugin provider no longer forces downcasing.
+* Some plugins failed installation due to capitalization munging, the elasticsearch_plugin_legacy provider no longer forces downcasing.
 
 #### Changes
 * The `install_options` parameter on the `elasticsearch::plugin` type has been removed. This was an undocumented parameter that often caused problems for users.
@@ -470,7 +470,7 @@ Bugfix release 0.9.3
 Bugfix release 0.9.2
 
 ####Features
-* Introducing es_instance_conn_validator resource to verify instance availability
+* Introducing es_instance_conn_validator_legacy resource to verify instance availability
 
 ####Bugfixes
 * Fix missing data path when using the path config setting but not setting the data path

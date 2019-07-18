@@ -1,11 +1,11 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__),"..","..",".."))
-require 'puppet/util/es_instance_validator'
+require 'puppet/util/es_instance_validator_legacy'
 
-# This file contains a provider for the resource type `es_instance_conn_validator`,
+# This file contains a provider for the resource type `es_instance_conn_validator_legacy`,
 # which validates the Elasticsearch instance connection by attempting an https connection.
 
-Puppet::Type.type(:es_instance_conn_validator).provide(:tcp_port) do
-  desc "A provider for the resource type `es_instance_conn_validator`,
+Puppet::Type.type(:es_instance_conn_validator_legacy).provide(:tcp_port) do
+  desc "A provider for the resource type `es_instance_conn_validator_legacy`,
         which validates the  connection by attempting an https
         connection to the Elasticsearch instance." 
 

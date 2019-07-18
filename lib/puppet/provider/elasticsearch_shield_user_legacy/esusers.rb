@@ -1,4 +1,4 @@
-Puppet::Type.type(:elasticsearch_shield_user).provide(:esusers) do
+Puppet::Type.type(:elasticsearch_shield_user_legacy).provide(:esusers) do
   desc "Provider for Shield file (esusers) user resources."
 
   mk_resource_methods

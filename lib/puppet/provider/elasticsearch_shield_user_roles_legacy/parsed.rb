@@ -7,7 +7,7 @@ else
   users_roles = '/usr/share/elasticsearch/shield/users_roles'
 end
 
-Puppet::Type.type(:elasticsearch_shield_user_roles).provide(
+Puppet::Type.type(:elasticsearch_shield_user_roles_legacy).provide(
   :parsed,
   :parent => Puppet::Provider::ParsedFile,
   :default_target => users_roles

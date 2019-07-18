@@ -1,8 +1,8 @@
-require 'puppet/provider/elastic_plugin'
+require 'puppet/provider/elastic_plugin_legacy'
 
-Puppet::Type.type(:elasticsearch_plugin).provide(
-  :elasticsearch_plugin,
-  :parent => Puppet::Provider::ElasticPlugin
+Puppet::Type.type(:elasticsearch_plugin_legacy).provide(
+  :elasticsearch_plugin_legacy,
+  :parent => Puppet::Provider::ElasticPluginLegacy
 ) do
   desc <<-END
     Post-5.x provider for Elasticsearch bin/elasticsearch-plugin

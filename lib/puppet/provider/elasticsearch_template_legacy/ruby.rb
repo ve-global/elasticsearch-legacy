@@ -4,9 +4,9 @@ require 'json'
 require 'net/http'
 require 'openssl'
 
-require 'puppet_x/elastic/deep_to_i'
+require 'puppet_x/elastic/deep_to_i_legacy'
 
-Puppet::Type.type(:elasticsearch_template).provide(:ruby) do
+Puppet::Type.type(:elasticsearch_template_legacy).provide(:ruby) do
   desc <<-ENDHEREDOC
     A REST API based provider to manage Elasticsearch templates.
   ENDHEREDOC
@@ -72,7 +72,7 @@ Puppet::Type.type(:elasticsearch_template).provide(:ruby) do
         {
           :name => name,
           :ensure => :present,
-          :content => Puppet_X::Elastic::deep_to_i(template),
+          :content => Puppet_X::Elastic::deep_to_i_legacy(template),
           :provider => :ruby
         }
       end

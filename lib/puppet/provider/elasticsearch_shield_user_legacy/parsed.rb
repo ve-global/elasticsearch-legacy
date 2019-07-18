@@ -7,7 +7,7 @@ else
   users = '/usr/share/elasticsearch/shield/users'
 end
 
-Puppet::Type.type(:elasticsearch_shield_user).provide(
+Puppet::Type.type(:elasticsearch_shield_user_legacy).provide(
   :parsed,
   :parent => Puppet::Provider::ParsedFile,
   :default_target => users

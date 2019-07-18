@@ -154,11 +154,11 @@ define elasticsearch_legacy::template (
 
   require elasticsearch_legacy
 
-  es_instance_conn_validator { "${name}-template":
+  es_instance_conn_validator_legacy { "${name}-template":
     server => $api_host,
     port   => $api_port,
   } ->
-  elasticsearch_template { $name:
+  elasticsearch_template_legacy { $name:
     ensure       => $ensure,
     content      => $_content,
     source       => $_source,

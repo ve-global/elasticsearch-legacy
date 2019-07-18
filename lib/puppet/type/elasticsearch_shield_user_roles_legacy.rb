@@ -1,4 +1,4 @@
-Puppet::Type.newtype(:elasticsearch_shield_user_roles) do
+Puppet::Type.newtype(:elasticsearch_shield_user_roles_legacy) do
   desc "Type to model Elasticsearch shield user roles."
 
   ensurable do
@@ -17,7 +17,7 @@ Puppet::Type.newtype(:elasticsearch_shield_user_roles) do
     end
   end
 
-  autorequire(:elasticsearch_shield_user) do
+  autorequire(:elasticsearch_shield_user_legacy) do
     self[:name]
   end
 end

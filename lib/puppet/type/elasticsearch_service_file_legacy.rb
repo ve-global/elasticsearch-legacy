@@ -2,9 +2,9 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__),"..",".."))
 
 require 'puppet/util/checksums'
 
-require 'puppet_x/elastic/es_versioning'
+require 'puppet_x/elastic/es_versioning_legacy'
 
-Puppet::Type.newtype(:elasticsearch_service_file) do
+Puppet::Type.newtype(:elasticsearch_service_file_legacy) do
   @doc = 'Manages elasticsearch service files.'
 
   ensurable
